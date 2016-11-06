@@ -44,8 +44,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 public class PurpleBot_TeleOp_Iterative extends OpMode {
 
     /* Declare OpMode members. */
-    PurpleBotHardware robot = new PurpleBotHardware(); // use the class created to define a Pushbot's hardware
-    // could also use HardwarePushbotMatrix class.
+    PurpleBotHardware robot = new PurpleBotHardware();
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -58,7 +57,7 @@ public class PurpleBot_TeleOp_Iterative extends OpMode {
         robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("status:", "Ready Player One");    //
+        telemetry.addData("status", "Ready Player One");    //
     }
 
     /*
@@ -83,7 +82,12 @@ public class PurpleBot_TeleOp_Iterative extends OpMode {
     public void loop() {
 
         robot.mtrLeft.setPower(-gamepad1.left_stick_y);
-        robot.mtrRight.setPower(-gamepad1.right_stick_y);
+
+        telemetry.addData("Lt encoder", robot.mtrLeft.getCurrentPosition());
+        telemetry.addData("rt encoder", robot.mtrRight.getCurrentPosition());
+        telemetry.addData("heading", robot.groTurn.getHeading());
+        telemetry.addData("button servo", robot.srvPush.getPosition());
+        telemetry.addData("tilt servo", robot.srvTilt.getPosition());
     }
 
     /*

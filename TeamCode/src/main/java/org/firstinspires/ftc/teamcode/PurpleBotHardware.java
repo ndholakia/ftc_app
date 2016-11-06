@@ -11,9 +11,11 @@ public class PurpleBotHardware {
     /* Public OpMode members. */
     public DcMotor mtrLeft = null;
     public DcMotor mtrRight = null;
+    public DcMotor mtrElevator = null;
 
     //Servos
     public Servo srvPush = null;
+    public Servo srvTilt = null;
 
     //Sensors
     public GyroSensor groTurn = null;
@@ -34,22 +36,29 @@ public class PurpleBotHardware {
 
         // Define and Initialize Motors
         mtrLeft = hwMap.dcMotor.get("mtrLeft");
-        mtrRight = hwMap.dcMotor.get("mtrRight");
-
-        srvPush = hwMap.servo.get("srvPush");
-
-        groTurn = hwMap.gyroSensor.get("groTurn");
         mtrLeft.setDirection(DcMotor.Direction.REVERSE);
-        mtrRight.setDirection(DcMotor.Direction.FORWARD);
-
-        // Set all motors to zero power
+        mtrLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mtrLeft.setPower(0);
+
+        mtrRight = hwMap.dcMotor.get("mtrRight");
+        mtrRight.setDirection(DcMotor.Direction.FORWARD);
+        mtrRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mtrRight.setPower(0);
 
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
-        mtrLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mtrRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mtrElevator = hwMap.dcMotor.get("mtrElevator");
+        mtrElevator.setDirection(DcMotorSimple.Direction.REVERSE);
+        mtrElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mtrElevator.setPower(0);
+
+        // Define and Initialize Servos
+        srvPush = hwMap.servo.get("srvPush");
+        srvTilt = hwMap.servo.get("srvTilt");
+
+
+        groTurn = hwMap.gyroSensor.get("groTurn");
+        groTurn.calibrate();
+        while (groTurn.isCalibrating())
+        { try {wait(500); } catch(Exception e){} }
     }
 
     /***
