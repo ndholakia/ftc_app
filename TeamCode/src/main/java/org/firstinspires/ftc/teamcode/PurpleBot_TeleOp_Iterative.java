@@ -82,6 +82,7 @@ public class PurpleBot_TeleOp_Iterative extends OpMode {
     public void loop() {
 
         robot.mtrLeft.setPower(-gamepad1.left_stick_y);
+        robot.mtrRight.setPower(-gamepad1.right_stick_y);
 
         telemetry.addData("Lt encoder", robot.mtrLeft.getCurrentPosition());
         telemetry.addData("rt encoder", robot.mtrRight.getCurrentPosition());
