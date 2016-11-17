@@ -1,24 +1,32 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class PurpleBotHardware {
     /* Public OpMode members. */
     public DcMotor mtrLeft = null;
     public DcMotor mtrRight = null;
     public DcMotor mtrElevator = null;
-
     //Servos
     public Servo srvPush = null;
+    public Servo srvCap = null;
     public Servo srvTilt = null;
-
     //Sensors
-    public GyroSensor groTurn = null;
+    public ModernRoboticsI2cGyro groTurn = null;
+    public ColorSensor tapeSensor = null;
+    public ColorSensor beaconSensorLt = null;
+    public ColorSensor beaconSensorRt = null;
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
@@ -36,29 +44,38 @@ public class PurpleBotHardware {
 
         // Define and Initialize Motors
         mtrLeft = hwMap.dcMotor.get("mtrLeft");
-        mtrLeft.setDirection(DcMotor.Direction.REVERSE);
-        mtrLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mtrLeft.setPower(0);
-
         mtrRight = hwMap.dcMotor.get("mtrRight");
-        mtrRight.setDirection(DcMotor.Direction.FORWARD);
-        mtrRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mtrRight.setPower(0);
-
         mtrElevator = hwMap.dcMotor.get("mtrElevator");
-        mtrElevator.setDirection(DcMotorSimple.Direction.REVERSE);
-        mtrElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mtrElevator.setPower(0);
 
-        // Define and Initialize Servos
         srvPush = hwMap.servo.get("srvPush");
+        srvCap = hwMap.servo.get("srvCap");
         srvTilt = hwMap.servo.get("srvTilt");
 
 
-        groTurn = hwMap.gyroSensor.get("groTurn");
-        groTurn.calibrate();
-        while (groTurn.isCalibrating())
-        { try {wait(500); } catch(Exception e){} }
+        groTurn = (ModernRoboticsI2cGyro) hwMap.gyroSensor.get("groTurn");
+
+        mtrLeft.setDirection(DcMotor.Direction.REVERSE);
+        mtrRight.setDirection(DcMotor.Direction.FORWARD);
+        mtrElevator.setDirection(DcMotor.Direction.FORWARD);
+//        mtrLeft.setMaxSpeed(8000);
+//        mtrRight.setMaxSpeed(8000);
+
+        // Set all motors to zero power
+        mtrLeft.setPower(0);
+        mtrRight.setPower(0);
+
+        // Set all motors to run without encoders.
+        // May want to use RUN_USING_ENCODERS if encoders are installed.
+//        mtrLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        mtrRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        // Color sensors
+        tapeSensor = hwMap.colorSensor.get("tapeSensor");
+        beaconSensorLt = hwMap.colorSensor.get("beaconSensorLt");
+        beaconSensorLt.enableLed(true);
+        beaconSensorRt = hwMap.colorSensor.get("beaconSensorRt");
+        beaconSensorRt.enableLed(true);
+
     }
 
     /***
