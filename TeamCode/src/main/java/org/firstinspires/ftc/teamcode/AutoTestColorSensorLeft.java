@@ -20,20 +20,26 @@ TARGET SCORE:
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.faltech.FaltechRobot;
 
 /**
  * A simple example of a linear op mode that will approach an IR beacon
  */
-public class AutoTestColorPrint extends LinearOpMode {
+@Autonomous(name = "ReportBeaconColorLt", group = "7079")
+public class AutoTestColorSensorLeft extends LinearOpMode {
 
-    private FaltechRobot robot;
+    private FaltechRobot FTrobot;
+    PurpleBotHardware robot = new PurpleBotHardware();
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new FaltechRobot(this);
+        robot.init(hardwareMap);
+        FTrobot = new FaltechRobot(this, robot);
+
         // wait for the start button to be pressed
         waitForStart();
 /* This is a Autonomous for blue alliance,
@@ -41,10 +47,32 @@ It goes from the corner to drop off the climbers
 into the shelter. Then it ends in the Floor Goal.
  */
         //Auto Start
-        robot.driveTrain.PrintColor (120);
+        //FTrobot.driveTrain.GoColor ("white", 0.5, 120);
+        //sleep(5000);
+        ElapsedTime timer = new ElapsedTime();
+        int timeout = 30;
+        robot.beaconSensorLt.enableLed(false);
+        robot.beaconSensorRt.enableLed(false);
+        while (timer.time() < timeout) {
+            int first_red_level = robot.beaconSensorLt.red();
+            int first_blue_level = robot.beaconSensorLt.blue();
+            String BeaconColor1 = FTrobot.driveTrain.GetBeaconColorLt();
+//            telemetry.addData("Beacon Color", BeaconColor1);
+//            telemetry.addData("Red level:  ", first_red_level + " Blue: " + first_blue_level);
+//            telemetry.update();
+        }
+/*        String BeaconColor = FTrobot.driveTrain.GetBeaconColorRt();
+        if (
+                BeaconColor.equals("red")
+                ) {}
+        else {
+            FTrobot.driveTrain.GoInches(6, .5, 15);
+        }
+*/
+
  //       robot.driveTrain.GoInches(60, .5, 15);
  //       robot.driveTrain.PivotTurn(-45, .5, 3);
- //       robot.driveTrain.GoInches(6, -.5, 5);
+ ////       robot.driveTrain.GoInches(6, -.5, 5);
        /* robot.arms.elevator.UpDegrees(30);
         robot.arms.hopper.goRight(4000);
         robot.arms.hopper.goLeft(4000);
